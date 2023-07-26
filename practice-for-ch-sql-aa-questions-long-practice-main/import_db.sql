@@ -2,7 +2,7 @@ PRAGMA foreign_keys = ON;
 
 DROP TABLE IF EXISTS question_likes;
 DROP TABLE IF EXISTS replies;
-DROP TABLE IF EXISTS questions_follows;
+DROP TABLE IF EXISTS question_follows;
 DROP TABLE IF EXISTS questions;
 DROP TABLE IF EXISTS users;
 
@@ -21,7 +21,7 @@ CREATE TABLE questions (
     FOREIGN KEY (author_id) REFERENCES users(id)
 );
 
-CREATE TABLE questions_follows (
+CREATE TABLE question_follows (
     id INTEGER PRIMARY KEY,
     user_id INTEGER NOT NULL,
     question_id INTEGER NOT NULL,
@@ -63,7 +63,7 @@ VALUES
     ('Tuition', 'How much is the full tuition?', (SELECT id from users WHERE fname = 'Michael' AND lname = 'Jordan' ));
 
 INSERT INTO
-    questions_follows (user_id, question_id)
+    question_follows (user_id, question_id)
 VALUES 
     -- ((SELECT id FROM users WHERE fname = 'Michael'), (SELECT questions.id from questions WHERE questions_follows.user_id = questions.author_id))
     (1,1);
