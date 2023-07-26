@@ -57,7 +57,9 @@ class Question
         question_rows.map { |question| Question.new(question)}
     end
 
-
+    def author
+        
+    end
 
 end
 
@@ -90,9 +92,13 @@ class User
         @lname = options['lname']
     end
 
+    def authored_questions
+        Question.find_by_author_id(id)
+    end
 
-
-
+    def authored_replies
+        Replies.find_by_user_id(id)
+    end
 end
 
 
@@ -157,6 +163,19 @@ class Replies
 
 
         reply_rows.map { |reply| Replies.new(reply)}
+    end
+
+    def self.find_by_question_id(question_id)
+        reply_rows = QuestionsDatabase.instance.execute(<<-SQL, question_id)
+            SELECT
+                *
+            FROM
+                replies
+            WHERE
+                question_id = ?
+        SQL
+
+        reply_rows.map { |reply| Replies.new(reply) }
     end
 
     def initialize(options)
