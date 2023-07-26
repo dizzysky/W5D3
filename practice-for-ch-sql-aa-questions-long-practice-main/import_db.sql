@@ -60,7 +60,8 @@ VALUES
 INSERT INTO 
     questions (title, body, author_id)
 VALUES 
-    ('Tuition', 'How much is the full tuition?', (SELECT id from users WHERE fname = 'Michael' AND lname = 'Jordan' ));
+    ('Tuition', 'How much is the full tuition?', (SELECT id from users WHERE fname = 'Michael' AND lname = 'Jordan' )),
+    ('Computers', 'Will I need a computer?', (SELECT id from users WHERE fname = 'Michael' AND lname = 'Jordan' ));
 
 INSERT INTO
     question_follows (user_id, question_id)

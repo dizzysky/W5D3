@@ -42,6 +42,23 @@ class Question
 
 
 
+    def self.find_by_author_id(author_id)
+        question_rows = QuestionsDatabase.instance.execute(<<-SQL, author_id)
+
+        SELECT 
+            *
+        FROM
+            questions
+        WHERE
+            author_id = ?
+        SQL
+
+
+        question_rows.map { |question| Question.new(question)}
+    end
+
+
+
 end
 
 
@@ -86,7 +103,7 @@ class QuestionFollows
     attr_accessor :id, :user_id, :question_id
 
 
-    def find_by_id(id)
+    def self.find_by_id(id)
         question_follow = QuestionsDatabase.instance.execute(<<-SQL, id)
         SELECT
             * 
@@ -96,7 +113,7 @@ class QuestionFollows
             id = ?
         SQL
 
-        return nil unless question_follows.length > 0
+        return nil unless question_follow.length > 0
         QuestionFollows.new(question_follow.first)
     end
 
@@ -125,6 +142,23 @@ class Replies
         Replies.new(reply.first)
     end
 
+
+
+    def self.find_by_user_id(author_id)
+        reply_rows = QuestionsDatabase.instance.execute(<<-SQL, author_id)
+
+        SELECT 
+            *
+        FROM
+            replies
+        WHERE
+            author_id = ?
+        SQL
+
+
+        reply_rows.map { |reply| Replies.new(reply)}
+    end
+
     def initialize(options)
         @id = options['id']
         @question_id = options['question_id']
@@ -146,7 +180,7 @@ class QuestionLikes
             WHERE
                 id = ?
         SQL
-        return nil if question_like.length > 0
+        return nil unless question_like.length > 0
 
         QuestionLikes.new(question_like.first)
     end
