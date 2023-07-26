@@ -107,3 +107,53 @@ class QuestionFollows
     end
 
 end
+
+class Replies
+    attr_accessor :id, :question_id, :parent_reply_id, :author_id, :body
+
+    def self.find_by_id(id)
+        reply = QuestionsDatabase.instance.execute(<<-SQL, id)
+            SELECT
+                *
+            FROM
+                replies
+            WHERE
+                id = ?
+        SQL
+        return nil unless reply.length > 0
+
+        Replies.new(reply.first)
+    end
+
+    def initialize(options)
+        @id = options['id']
+        @question_id = options['question_id']
+        @parent_reply_id = options['parent_reply_id']
+        @author_id = options['author_id']
+        @body = options['body']
+    end
+end
+
+class QuestionLikes
+    attr_accessor :id, :user_id, :question_id
+
+    def self.find_by_id(id)
+        question_like = QuestionsDatabase.instance.execute(<<-SQL, id)
+            SELECT
+                *
+            FROM
+                question_likes
+            WHERE
+                id = ?
+        SQL
+        return nil if question_like.length > 0
+
+        QuestionLikes.new(question_like.first)
+    end
+
+    def initialize(options)
+        @id = options['id']
+        @user_id = options['user_id']
+        @question_id = options['question_id']
+    end
+end
